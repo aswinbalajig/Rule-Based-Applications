@@ -124,7 +124,12 @@ def deserialize_ast(json_data):
 
 def evaluate_condition(condition, data):
     # Split the condition (e.g., "age > 30")
-    field, operator, value = condition.split()
+    print(f"Evaluating condition: {condition}")
+    
+    parts = condition.split()
+    if len(parts) != 3:
+        raise ValueError(f"Invalid condition format: {condition}")
+    field, operator, value = parts
     value = value.strip("'")  # Removing  quotes if any (for string comparisons)
     
     # Retrieving the corresponding value from input data
@@ -151,6 +156,8 @@ def evaluate_condition(condition, data):
 
 # Function to evaluate the AST tree recursively
 def evaluate_ast(node, data):
+    if node is None:
+        return None
     if node.node_type == 'operand':
         # Leaf node: evaluate the condition
         return evaluate_condition(node.value, data)
@@ -194,9 +201,10 @@ class ruleEvaluate(APIView):
         try:
             serializer = serializers.ruleEvaluvateSerializer(data=request.data)
             serializer.is_valid(raise_exception=True)
-            rule_ast = get_object_or_404(models.rules, pk=rule_id).rule_ast  
-            root_node = deserialize_ast(rule_ast)
-            result = evaluate_ast(root_node, serializer.data)
+            rule_ast = get_object_or_404(models.rules, pk=rule_id).rule_ast
+            print(rule_ast)  
+            root_node = deserialize_ast(json.loads(rule_ast))
+            result = evaluate_ast(root_node, serializer.validated_data['data'])
             return Response({'result': result}, status=status.HTTP_200_OK)
         
         except ValueError as ve:
@@ -204,10 +212,13 @@ class ruleEvaluate(APIView):
         
         except KeyError as ke:
             return Response({'error': f"Missing field: {str(ke)}"}, status=status.HTTP_400_BAD_REQUEST)
-        
+        '''
         except Exception as e:
+            print(e)
             return Response({'error': f"An unexpected error occurred: {str(e)}"}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
+        '''
+        
 
 class CombineRules(APIView):
     def post(self,request):
