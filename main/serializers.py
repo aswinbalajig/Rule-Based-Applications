@@ -10,16 +10,18 @@ class ruleStoreModelSerializer(serializers.ModelSerializer):
     id=serializers.IntegerField(read_only=True)
     def create(self, validated_data):
         json_data=self.context['data']
-        if(json_data['valid']):
+        validated_data['rule_string']=self.context['rule_string']
+        if(not json_data['valid']):
+            raise serializers.ValidationError(json_data['content'])
+        else:
             rule=models.rules(rule_ast=json_data['content'],**validated_data)
             rule.save()
-        else:
-            return serializers.ValidationError(json_data['content'])
-        return rule
+            return rule
 
     
 class ruleCombineSerializer(serializers.Serializer):
     #gets list of rules_id
+    rule_name=serializers.CharField(max_length=255)
     ids=serializers.ListField(
         child=serializers.IntegerField(),
         allow_empty=False

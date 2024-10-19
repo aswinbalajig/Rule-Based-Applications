@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Simple Rule Based Application</title>
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/js/all.min.js"></script>
+    <style>
+        .bold-font {
+            font-weight: 900;
+        }
+        .content {
+            display: none; /* Hide all content by default */
+        }
+        #addNewRule:target, #combineRules:target, #evaluate:target {
+            display: block; /* Show the targeted content */
+        }
+    </style>
+    <script type="text/javascript" src="..\JavaScript\homepage.js"></script>
+</head>
+<body>
+    <header class="sticky-top">
+        <div class="d-flex justify-content-center" style="background-color: black;">
+            <a class="navbar-brand ms-5 bold-font" style="font-size: 5rem; color: aliceblue;" href="#">Simple Rule Based Application</a>
+        </div>
+    </header>
+    <div class="container mt-5">
+        <div class="card text-center">
+            <div class="card-header">
+                <ul class="nav nav-pills card-header-pills">
+                    <li class="nav-item">
+                        <a class="nav-link active" id="addrule" href="#addNewRule">Add new rule</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="combinerules" href="#combineRules">Combine rules</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" id="evaluaterules" href="#evaluate">Evaluate</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Content Sections -->
+        <div class="content" id="addNewRule">
+            <form id="RuleForm">
+                <div style="border-bottom: 2px solid black;" class="mb-4">
+                    <label>
+                        <h1>Add New Rule</h1>
+                    </label>
+                </div>
+                <div style="border: 2px solid rgb(83, 83, 83); border-radius:10px; padding:10px;">
+                    <div class="form-group mb-4">
+                        <label for="InputName" class="mb-2">Rule Name</label>
+                        <input type="text" class="form-control" id="InputName" placeholder="Enter the Rule Name">
+                    </div>
+                    <div class="form-group">
+                        <label for="InputRule" class="mb-2">Rule String</label>
+                        <input type="text" class="form-control" id="InputRule" placeholder="Enter the actual rule">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="content" id="combineRules">
+            <form id="CombineRulesForm">
+                <div style="border-bottom: 2px solid black;" class="mb-4">
+                    <label>
+                        <h1>Combine Rules</h1>
+                    </label>
+                </div>
+                <div style="border: 2px solid rgb(0, 0, 0); border-radius:10px; padding:10px;">
+                    <div class="form-group mb-4">
+                        <label  class="mb-2 bold-font">Select Rules:</label>
+                        <div id="ruleslistcombine">
+                            <input class="form-check-input" type="checkbox" value="1" name="rule"> hello</input>
+                        </div>
+                        
+                    </div>
+                    <div class="form-group">
+                        <label for="CombineRule" class="mb-2">Give it a Name</label>
+                        <input type="text" class="form-control" id="CombineRuleName" placeholder="Enter the Rule Name">
+                    </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </div>
+            </form>
+        </div>
+
+        <div class="content" id="evaluate">
+            <form id="EvaluationForm">
+                <div style="border-bottom: 2px solid black;" class="mb-4">
+                    <label>
+                        <h1>Evaluate</h1>
+                    </label>
+                </div>
+                <div style="border: 2px solid rgb(83, 83, 83); border-radius:10px; padding:10px;">
+                    <div class="form-group mb-4">
+                        <label for="EvaluationRuleName" class="mb-2">Input Data</label>
+                        <textarea class="form-control" id="EvaluationRuleData" rows="4" placeholder="Enter the Data in JSON string format"></textarea>
+                    </div>
+                    <div class="form-group">
+                        <label for="ruleslistevaluate">Select a Rule:</label>
+                        <select id="ruleslistevaluate" class="mt-2" name="category">
+                            
+                        </select>
+                      </div>
+                    <button type="submit" class="btn btn-primary mt-4">Submit</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>
