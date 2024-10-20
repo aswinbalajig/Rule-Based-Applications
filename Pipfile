@@ -9,6 +9,7 @@ django-restframework = "*"
 djangorestframework = "*"
 drf-nested-routers = "*"
 django-cors-headers = "*"
+python-dotenv = "*"
 
 [dev-packages]
 
