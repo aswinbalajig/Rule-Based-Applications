@@ -2,29 +2,29 @@ let currRulesCount=0;
 
 //add button conditions
 
-function redirection(from)
-{
-    const addRuleLink=document.querySelector('#addrule');
+ function redirection(from)
+ {
+     const addRuleLink=document.querySelector('#addrule');
     
-    if(from==='combine')
-    {
-        if(currRulesCount<=1)
-        {
-            alert('create more than one rule to combine rules');
-            addRuleLink.click();
-        }
-    }
-    else if(from==='evaluate')
-    {
-        if(currRulesCount<1)
-        {
-            alert('create atleast one rule to perform evaluation');
-            addRuleLink.click();
+     if(from==='combine')
+     {
+         if(currRulesCount<=1)
+         {   window.location.href = addRuleLink.href;
+             alert('create more than one rule to combine rules');
+             
+         }
+     }
+     else if(from==='evaluate')
+     {
+         if(currRulesCount<1)
+         {   window.location.href = addRuleLink.href;
+             alert('create atleast one rule to perform evaluation');
+             
 
-        }
-    }
+         }
+     }
 
-}
+ }
 
 
 //end of add button conditions
@@ -41,36 +41,42 @@ async function combinerules(event)
         ids.push(checkbox.value);
     });
     console.log(`selected_rules_id : ${ids}`);
+    if(ids.length>1){
+        try{
 
-    try{
-
-        const response=await fetch(`http://127.0.0.1:8000/rules/combine_rules`,
+            const response=await fetch(`http://127.0.0.1:8000/rules/combine_rules`,
+                {
+                    method:'POST',
+                    headers:{
+                        'Content-Type' : 'application/json' 
+                    },
+                    body : JSON.stringify({rule_name,ids})
+                }
+            );
+    
+            if(response.ok)
             {
-                method:'POST',
-                headers:{
-                    'Content-Type' : 'application/json' 
-                },
-                body : JSON.stringify({rule_name,ids})
+                alert('rule is successfully created');
+                window.location.href="../html/homepage.html"
             }
-        );
-
-        if(response.ok)
+            else{
+                const errorData=await response.json();
+                console.error("Unable to Create: ",erroData);
+                alert('Unable to Create Rule :'+ errorData.non_field_errors[0]);
+            }
+    
+        }
+        catch(error)
         {
-            alert('rule is successfully created');
-            window.location.href="../html/homepage.html"
-        }
-        else{
-            const errorData=await response.json();
-            console.error("Unable to Create: ",erroData);
-            alert('Unable to Create Rule :'+ errorData.non_field_errors[0]);
-        }
-
+            console.error(`Error Creating Rule: ${error}`);
+            alert(`Error Creating Rule: ${error}`);
+        } 
     }
-    catch(error)
+    else
     {
-        console.error(`Error Creating Rule: ${error}`);
-        alert(`Error Creating Rule: ${error}`);
+        alert('Create more than one rule to combine');
     }
+    
 }
 
 
